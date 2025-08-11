@@ -1,9 +1,12 @@
-from dataclass import dataclass
+from dataclasses import dataclass
 
 @dataclass
 class DataTransformationArtifact:
-    image_file_path: str
-    converted_document_file_path: str
+    """
+    Holds the output paths generated after data transformation.
+    """
+    image_file_path: str                    # Path to folder containing extracted images
+    converted_document_file_path: str  
 
 @dataclass
 class DataDetectionArtifact:
