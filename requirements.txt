@@ -1,0 +1,8 @@
+fastapi 
+uvicorn 
+python-doctr
+python-multipart
+docx2pdf 
+pdf2image
+tqdm
+pillow
