@@ -12,6 +12,7 @@ from src.entity.config_entity import DataTransformationConfig, ConfigEntity
 from src.entity.artifact_entity import DataTransformationArtifact
 
 
+
 class DataTransformation:
     def __init__(self):
         try:

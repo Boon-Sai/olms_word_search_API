@@ -48,3 +48,31 @@ class DataTransformationConfig:
         # Supported extensions
         self.supported_doc_extenctions = config.supported_doc_extenctions
         self.supported_img_extenctions = config.supported_img_extenctions
+
+class DataDetectionConfig:
+    def __init__(self, config: ConfigEntity):
+        # Base folders
+        self.data_folder_path = config.data_folder_path
+        self.artifact_folder_path = config.artifact_folder_path
+
+        # Data detection main folder
+        self.data_detection_folder_path = os.path.join(
+            self.artifact_folder_path, "data_detection", "annotated_images"
+        )
+        os.makedirs(self.data_detection_folder_path, exist_ok=True)
+
+        # subfolders for outputs
+        self.annotated_images_folder = os.path.join(
+            self.data_detection_folder_path, "annotated_images"
+        )
+        self.output_json_folder = os.path.join(
+            self.data_detection_folder_path, "output_json"
+        )
+        os.makedirs(self.output_json_folder, exist_ok=True)
+
+        # models and it's configs
+        self.data_detection_model = config.data_detection_model
+        self.data_recognition_model = config.data_recognition_model
+        self.pretrained = config.pretrained
+        self.assume_straight_text = config.assume_straight_text
+        self.export_as_straingt_boxes = config.export_as_straingt_boxes
