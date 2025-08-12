@@ -1,47 +1,39 @@
-# src/pipeline/pipeline.py
-
 import sys
 from src.exception.exception import WordSearchException
 from src.logging import logger
 from src.components.data_transformation import DataTransformation
 from src.components.data_detection import DataDetection
 
-def run_pipeline(input_folder: str = None):
-    """
-    Runs the full data pipeline:
-    1. Data Transformation (convert documents/images to PDFs & extract images)
-    2. Data Detection (run OCR/detection on extracted images)
 
-    Args:
-        input_folder (str): Path to input data folder. If None, uses default from config.
-    """
-    try:
-        logger.logger.info("=== Data Pipeline Started ===")
+class TrainPipeline:
+    def __init__(self):
+        self.data_transformation = DataTransformation()
+        self.data_detection = DataDetection()
 
-        # ---------------- Data Transformation ----------------
-        transformer = DataTransformation(input_folder=input_folder)
-        transformation_artifact = transformer.initiate_data_transformation()
+    def run_pipeline(self, data_path):
+        try:
+            logger.logger.info("=== Data Pipeline Started ===")
 
-        logger.logger.info("Data Transformation Completed")
-        logger.logger.info(f"Extracted Images Folder: {transformation_artifact.image_file_path}")
-        logger.logger.info(f"Converted Documents Folder: {transformation_artifact.converted_document_file_path}")
+            # ---------------- Data Transformation ----------------
+            transformer = DataTransformation(data_folder_path=data_path)
+            transformation_artifact = transformer.initiate_data_transformation()
 
-        # ---------------- Data Detection ----------------
-        detector = DataDetection(
-            image_folder_path=transformation_artifact.image_file_path
-        )
-        detection_artifact = detector.initiate_data_detection()
+            logger.logger.info("Data Transformation Completed")
+            logger.logger.info(f"Extracted Images Folder: {transformation_artifact.image_file_path}")
+            logger.logger.info(f"Converted Documents Folder: {transformation_artifact.converted_document_file_path}")
 
-        logger.logger.info("Data Detection Completed")
-        logger.logger.info(f"Detection Results File: {detection_artifact.output_json_file_path}")
+            # ---------------- Data Detection ----------------
+            detector = DataDetection(
+                image_folder_path=transformation_artifact.image_file_path
+            )
+            detection_artifact = detector.initiate_data_detection()
 
-        logger.logger.info("=== Data Pipeline Completed ===")
+            logger.logger.info("Data Detection Completed")
+            logger.logger.info(f"Detection Results File: {detection_artifact.detection_result_file_path}")
 
-        return {
-            "extracted_images_folder": transformation_artifact.image_file_path,
-            "converted_documents_folder": transformation_artifact.converted_document_file_path,
-            "detection_results_file": detection_artifact.output_json_file_path
-        }
+            logger.logger.info("=== Data Pipeline Completed ===")
 
-    except Exception as e:
-        raise WordSearchException(str(e), sys)
+            return transformation_artifact, detection_artifact
+
+        except Exception as e:
+            raise WordSearchException(str(e), sys)

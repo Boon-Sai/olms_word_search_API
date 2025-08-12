@@ -1,2 +1,0 @@
-[2025-08-12 12:36:01,832] - [app.py:25] - [INFO] - Received API request to run pipeline on folder: /home/prem/Boonsai/Word_serch_API/data
-[2025-08-12 12:36:01,832] - [exception.py:13] - [ERROR] - Error occurred in Python Script: [/home/prem/Boonsai/Word_serch_API/app.py] at line number [28]. Error message: [run_pipeline() got an unexpected keyword argument 'input_folder']

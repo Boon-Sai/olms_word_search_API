@@ -1,3 +1,0 @@
-[2025-08-12 12:38:52,974] - [pipeline.py:19] - [INFO] - === Data Pipeline Started ===
-[2025-08-12 12:38:52,974] - [exception.py:13] - [ERROR] - Error occurred in Python Script: [/home/prem/Boonsai/Word_serch_API/src/pipeline/pipeline.py] at line number [22]. Error message: [DataTransformation.__init__() got an unexpected keyword argument 'input_folder']
-[2025-08-12 12:38:52,974] - [exception.py:13] - [ERROR] - Error occurred in Python Script: [/home/prem/Boonsai/Word_serch_API/app.py] at line number [20]. Error message: [Error occurred in Python Script: [/home/prem/Boonsai/Word_serch_API/src/pipeline/pipeline.py] at line number [22]. Error message: [DataTransformation.__init__() got an unexpected keyword argument 'input_folder']]

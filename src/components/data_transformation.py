@@ -14,10 +14,13 @@ from src.entity.artifact_entity import DataTransformationArtifact
 
 
 class DataTransformation:
-    def __init__(self):
+    def __init__(self, data_folder_path=None):
         try:
             logger.logger.info("Initializing Data Transformation component...")
             self.config = DataTransformationConfig(config=ConfigEntity())
+
+            if data_folder_path:
+                self.config.data_folder_path = data_folder_path
 
             logger.logger.info(f"Documents folder: {self.config.documents_folder}")
             logger.logger.info(f"Images folder: {self.config.images_folder}")

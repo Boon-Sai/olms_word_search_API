@@ -3,3 +3,4 @@ external_data
 __pycache__
 artifacts
 logs
+log

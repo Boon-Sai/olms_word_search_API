@@ -1,47 +1,52 @@
-# app.py
-import sys
-import traceback
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import JSONResponse
+import shutil
+import os
+import tempfile
+from src.pipeline.pipeline import TrainPipeline
 from src.exception.exception import WordSearchException
 from src.logging import logger
-from src.pipeline.pipeline import Pipeline
 
-app = FastAPI(
-    title="Word Search Pipeline API",
-    description="API to trigger data transformation and data detection pipeline",
-    version="1.0.0"
-)
-
-
-@app.get("/")
-def read_root():
-    return {"message": "Word Search Pipeline API is running"}
-
+app = FastAPI(title="Word Search Pipeline API")
 
 @app.post("/run-pipeline")
-def run_pipeline():
+async def run_pipeline_api(folder_path: str = Form(...)):
+    """
+    API endpoint to run the Word Search pipeline.
+    Takes a folder path containing documents as input.
+    """
     try:
-        logger.logger.info("=== API Trigger: Pipeline Started ===")
-        pipeline = Pipeline()
-        artifact = pipeline.run_pipeline()
-        logger.logger.info("=== API Trigger: Pipeline Completed ===")
+        logger.logger.info(f"Received folder path: {folder_path}")
 
-        return JSONResponse(content={
-            "status": "success",
-            "extracted_images_folder": artifact.image_file_path,
-            "converted_documents_folder": artifact.converted_document_file_path,
-            "detection_results_folder": artifact.detection_results_path
-        })
+        if not os.path.exists(folder_path):
+            return JSONResponse(
+                status_code=400,
+                content={"error": "Folder path does not exist"}
+            )
 
-    except WordSearchException as we:
-        logger.logger.error(f"WordSearchException: {str(we)}")
-        raise HTTPException(status_code=500, detail=str(we))
+        # Run the pipeline
+        pipeline = TrainPipeline()
+        transformation_artifact, detection_artifact = pipeline.run_pipeline(folder_path)
 
+        response = {
+            "message": "Pipeline executed successfully",
+            "data_transformation": {
+                "extracted_images_folder": transformation_artifact.image_file_path,
+                "converted_documents_folder": transformation_artifact.converted_document_file_path
+            },
+            "data_detection": {
+                "detection_results_file": detection_artifact.detection_result_file_path
+            }
+        }
+
+        return JSONResponse(status_code=200, content=response)
+
+    except WordSearchException as e:
+        logger.logger.error(f"Pipeline failed with error: {str(e)}")
+        return JSONResponse(status_code=500, content={"error": str(e)})
     except Exception as e:
-        err_msg = "".join(traceback.format_exception(*sys.exc_info()))
-        logger.logger.error(f"Unexpected error: {err_msg}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        logger.logger.error(f"Unexpected error: {str(e)}")
+        return JSONResponse(status_code=500, content={"error": str(e)})
 
 
 if __name__ == "__main__":

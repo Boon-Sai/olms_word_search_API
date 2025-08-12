@@ -6,3 +6,4 @@ docx2pdf
 pdf2image
 tqdm
 pillow
+requests
