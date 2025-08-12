@@ -9,25 +9,17 @@ from src.logging import logger
 
 app = FastAPI(title="Word Search Pipeline API")
 
+import os
 @app.post("/run-pipeline")
 async def run_pipeline_api(folder_path: str = Form(...)):
-    """
-    API endpoint to run the Word Search pipeline.
-    Takes a folder path containing documents as input.
-    """
     try:
         logger.logger.info(f"Received folder path: {folder_path}")
-
         if not os.path.exists(folder_path):
-            return JSONResponse(
-                status_code=400,
-                content={"error": "Folder path does not exist"}
-            )
-
-        # Run the pipeline
+            return JSONResponse(status_code=400, content={"error": "Folder path does not exist"})
+        # Ensure logs directory exists
+        os.makedirs("logs", exist_ok=True)
         pipeline = TrainPipeline()
         transformation_artifact, detection_artifact = pipeline.run_pipeline(folder_path)
-
         response = {
             "message": "Pipeline executed successfully",
             "data_transformation": {
@@ -38,9 +30,7 @@ async def run_pipeline_api(folder_path: str = Form(...)):
                 "detection_results_file": detection_artifact.detection_result_file_path
             }
         }
-
         return JSONResponse(status_code=200, content=response)
-
     except WordSearchException as e:
         logger.logger.error(f"Pipeline failed with error: {str(e)}")
         return JSONResponse(status_code=500, content={"error": str(e)})
