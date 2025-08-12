@@ -52,7 +52,7 @@ class DataDetection:
 
             img.save(output_path, "JPEG")
 
-    def run_detection(self):
+    def initiate_data_detection(self):
         """Run OCR on all images from data_transformation and save results."""
         try:
             results = []
