@@ -29,7 +29,7 @@ class TrainPipeline:
             detection_artifact = detector.initiate_data_detection()
 
             logger.logger.info("Data Detection Completed")
-            logger.logger.info(f"Detection Results File: {detection_artifact.detection_result_file_path}")
+            logger.logger.info(f"Detection Results File: {detection_artifact.output_json_file_path}")
 
             logger.logger.info("=== Data Pipeline Completed ===")
 

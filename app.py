@@ -27,7 +27,7 @@ async def run_pipeline_api(folder_path: str = Form(...)):
                 "converted_documents_folder": transformation_artifact.converted_document_file_path
             },
             "data_detection": {
-                "detection_results_file": detection_artifact.detection_result_file_path
+                "detection_results_file": detection_artifact.output_json_file_path
             }
         }
         return JSONResponse(status_code=200, content=response)
