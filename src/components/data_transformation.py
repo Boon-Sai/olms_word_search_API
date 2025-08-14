@@ -15,6 +15,7 @@ from src.entity.artifact_entity import DataTransformationArtifact
 
 class DataTransformation:
     def __init__(self, data_folder_path=None):
+        
         try:
             logger.logger.info("Initializing Data Transformation component...")
             self.config = DataTransformationConfig(config=ConfigEntity())
@@ -36,7 +37,7 @@ class DataTransformation:
             pdf_paths = []
             supported_extensions = (
                 self.config.supported_doc_extenctions
-                + self.config.supported_img_extenctions
+                + self.config.supported_img_extenctions  # it supposed ot add in config_entity
                 + ["pdf"]
             )
 
@@ -132,7 +133,7 @@ class DataTransformation:
             logger.logger.info("Starting full data transformation pipeline...")
 
             pdf_paths = self.preprocess_files()
-            image_paths = self.extract_images_from_pdfs(pdf_paths)
+            self.extract_images_from_pdfs(pdf_paths)
 
             logger.logger.info("Data transformation completed successfully.")
 

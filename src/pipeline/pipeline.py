@@ -23,9 +23,7 @@ class TrainPipeline:
             logger.logger.info(f"Converted Documents Folder: {transformation_artifact.converted_document_file_path}")
 
             # ---------------- Data Detection ----------------
-            detector = DataDetection(
-                image_folder_path=transformation_artifact.image_file_path
-            )
+            detector = DataDetection()
             detection_artifact = detector.initiate_data_detection()
 
             logger.logger.info("Data Detection Completed")

@@ -61,7 +61,7 @@ class DataDetectionConfig:
         )
         os.makedirs(self.data_detection_folder_path, exist_ok=True)
 
-        # subfolders for outputs
+        # Subfolders for outputs
         self.annotated_images_folder = os.path.join(
             self.data_detection_folder_path, "annotated_images"
         )
@@ -70,9 +70,29 @@ class DataDetectionConfig:
         )
         os.makedirs(self.output_json_folder, exist_ok=True)
 
-        # models and it's configs
+        # Models and their configs
         self.data_detection_model = config.data_detection_model
         self.data_recognition_model = config.data_recognition_model
         self.pretrained = config.pretrained
         self.assume_straight_text = config.assume_straight_text
         self.export_as_straingt_boxes = config.export_as_straingt_boxes
+
+class DataSearchConfig:
+    def __init__(self, config: ConfigEntity):
+        # Base folders
+        self.artifact_folder_path = config.artifact_folder_path
+
+        # Data search main folder
+        self.data_search_folder_path = os.path.join(
+            self.artifact_folder_path, "data_search"
+        )
+        os.makedirs(self.data_search_folder_path, exist_ok=True)
+
+        # Input JSON from detection
+        self.input_json_path = os.path.join(
+            self.artifact_folder_path,
+            "data_detection",
+            "annotated_images",
+            "output_json",
+            "final_output.json"
+        )

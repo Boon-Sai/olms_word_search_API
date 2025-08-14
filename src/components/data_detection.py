@@ -13,7 +13,7 @@ from src.entity.artifact_entity import DataDetectionArtifact
 
 
 class DataDetection:
-    def __init__(self, image_folder_path=None):
+    def __init__(self):
         try:
             logger.logger.info("Initializing Data Detection component...")
             self.config = DataDetectionConfig(config=ConfigEntity())
@@ -59,7 +59,7 @@ class DataDetection:
 
             # Path to images from data_transformation
             images_root = os.path.join(
-                self.config.artifact_folder_path, "data_transformation", "images"
+                self.config.artifact_folder_path, "data_transformation", "images" #need to add it in constants
             )
 
             if not os.path.exists(images_root):
@@ -110,7 +110,7 @@ class DataDetection:
                     self.annotate_page(img_path, page_words, annotated_img_path)
 
             # Save all results to JSON
-            json_path = os.path.join(self.config.output_json_folder, "final_output.json")
+            json_path = os.path.join(self.config.output_json_folder, "final_output.json") # need to add it in constants
             with open(json_path, "w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2, ensure_ascii=False)
 

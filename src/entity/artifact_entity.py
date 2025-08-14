@@ -12,3 +12,7 @@ class DataTransformationArtifact:
 class DataDetectionArtifact:
     annotated_image_file_path: str
     output_json_file_path: str
+
+@dataclass
+class DataSearchArtifact:
+    search_result_file_path: str
